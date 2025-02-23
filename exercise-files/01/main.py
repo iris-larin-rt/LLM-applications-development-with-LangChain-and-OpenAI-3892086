@@ -1,13 +1,35 @@
 from dotenv import load_dotenv
 from langchain_openai import OpenAI
+from langchain_core.prompts import PromptTemplate, ChatPromptTemplate
 from colorama import Fore
+from langchain_core.output_parsers import StrOutputParser
 
+# https://python.langchain.com/docs/introduction/
 load_dotenv()
+llm = OpenAI()
 
+
+# prompt_template = PromptTemplate.from_template("Tell me a joke about {topic}")
+
+# def generate(text):
+#     """Provide text input to the model and return the generated text using promt templates.
+#     https://python.langchain.com/docs/how_to/#prompt-templates"""
+#     prompt = prompt_template.format(topic=text)
+#     print(prompt)
+#     return llm.invoke(prompt)    
+
+
+prompt_template = ChatPromptTemplate.from_template("Tell me a joke about {topic}")
+output_parser = StrOutputParser()
 
 def generate(text):
-    """ generate text based on the input """
-    pass
+    """declarative way to compose chains together using LCEL: using ChatPromptTemplate.
+    https://python.langchain.com/docs/concepts/lcel/
+    https://python.langchain.com/docs/concepts/output_parsers/"""
+
+    chain = prompt_template | llm | output_parser
+    print(prompt_template)
+    return chain.invoke({"topic": text})     
 
 
 def start():
