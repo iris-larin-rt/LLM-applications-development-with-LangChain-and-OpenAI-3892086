@@ -1,8 +1,10 @@
 from langchain_community.vectorstores import FAISS
 from langchain.prompts.chat import ChatPromptTemplate
-from langchain_openai import OpenAIEmbeddings, OPenAI
+# from langchain_openai import OpenAIEmbeddings, OpenAI
+from langchain_openai import OpenAI
+from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_core.output_parsers import StrOutputParser
-from langchain_core.runnables import RunnablePassThrough
+from langchain_core.runnables import RunnablePassthrough
 from dotenv import load_dotenv
 
 

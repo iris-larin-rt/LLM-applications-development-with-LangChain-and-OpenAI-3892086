@@ -51,6 +51,7 @@ pip3 install -qU langchain-community
 ```
 **Windows**:
 ```
+run requirents last!
 pip install -r requirements.txt
 pip install faiss-cpu
 pip install -qU langchain-community
