@@ -1,8 +1,10 @@
+import faiss
 from langchain_community.vectorstores import FAISS
+from langchain_community.docstore.in_memory import InMemoryDocstore
+from langchain_openai import OpenAIEmbeddings
 from langchain.prompts.chat import ChatPromptTemplate
-# from langchain_openai import OpenAIEmbeddings, OpenAI
 from langchain_openai import OpenAI
-from langchain_community.embeddings import OpenAIEmbeddings
+# from langchain_community.embeddings import OpenAIEmbeddings
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from dotenv import load_dotenv
@@ -42,8 +44,8 @@ print(docs[0].page_content)
 
 retrieval_chain = ( 
         {
-            "contexts": retriever,
-            "question": RunnablePassThrough()
+            "Context": retriever,
+            "Question": RunnablePassthrough()
         }
         | prompt
         | model
