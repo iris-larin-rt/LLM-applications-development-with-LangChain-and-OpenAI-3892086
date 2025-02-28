@@ -13,7 +13,7 @@ from dotenv import load_dotenv
 load_dotenv()
 model = OpenAI()
 
-template = """Answer the question based only on the following contexts
+template = """Answer the question based only on the following contexts and finish each sentence with an exclamation mark!
  {Context}
 
 Question: {Question}
@@ -26,20 +26,21 @@ prompt = ChatPromptTemplate.from_template(template)
 # Creating embeddings: Converts text into a numerical format (vectors) that represents its meaning, making it easier for a machine to understand; 
 # Vector store: Stores these embeddings in a database, allowing efficient searching and retrieval based on semantic similarity.
 
-vectorstore = FAISS.from_texts(['harisson worked at kensho'], embedding=OpenAIEmbeddings())
+vectorstore = FAISS.from_texts(['harisson worked at kensho', 'harisson is 5 years old', 'harisson like water melon','harisson like candy'], embedding=OpenAIEmbeddings())
 
 
-# querying the vectorstore --> Define a query; Run similarity search: Use the vector store's method to search for relevant documents based on the query;
+# Example 1: Basic example: Similarity search on vector store (FAISS)
+# querying the vector store --> Define a query; Run similarity search: Use the vector store's method to search for relevant documents based on the query;
 # Top_k parameter: Optionally limit the results to the top most relevant ones;Print results: Retrieve and display the content of the most relevant documents; The process returns document objects with content (and optional metadata) matching the query's embeddings.
-query = "where did harrisson work?"
+query = "what does harisson like?"
 docs = vectorstore.similarity_search(query, top_k=1)
-print(docs[0].page_content)
+# print(docs[0].page_content)
 
-
-# querying vector store as retriever
+# Example 2: Querying vector store as retriever(FAISS) using OpenAI model and Langchain to chain the retriever and model together
+# querying vector store as retriever - requires model = OpenAI() where are querying vector store in similarity search does not.
 retriever = vectorstore.as_retriever()
 docs = retriever.invoke(query, top_k=1)
-print(docs[0].page_content)
+# print(docs[0].page_content)
 
 
 retrieval_chain = ( 
