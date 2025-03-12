@@ -72,12 +72,14 @@ chat_history= []
 documents = TextLoader("./docs/faq.txt").load()
 text_splitter = CharacterTextSplitter(chunk_size=100, chunk_overlap=0, separator="\n")
 splits = text_splitter.split_documents(documents)
+print("splits: " + str(splits))
 
 
 # # Step 2: convert chunks to embeddings (vectors) --> using chroma vector store --> langchain_community.embeddings import OpenAIEmbeddings
 db = Chroma.from_documents(documents, OpenAIEmbeddings())
 retriever = db.as_retriever()  
-    
+print('retrievers: ' + str(retriever))
+
 # Step 3: Retrieve chat history: give access to  context and query/history to the model
 #   First we'll need to define a sub-chain that takes historical messages and the latest user question, and reformulates the question if it makes 
 #   reference to any information in the historical information.
@@ -88,13 +90,14 @@ retriever = db.as_retriever()
 #   create_history_aware_retriever constructs a chain that accepts keys input and chat_history as input, and has the same output schema as a retriever.
 history_aware_retriever = create_history_aware_retriever(
     model, retriever, contextualize_q_prompt)
+print('history_aware_retriever: ' +  str(history_aware_retriever))
 
 # Step 4: create a chain that retrieve and generate response:
 # Here we use create_stuff_documents_chain to generate a question_answer_chain, with input keys context, chat_history, and input-- 
 # it accepts the retrieved context alongside the conversation history and query to generate an answer.
 
 question_answer_chain = create_stuff_documents_chain(model, qa_prompt)
-
+print('question_answer_chain: ' + str(question_answer_chain))
 
 # We build our final rag_chain with create_retrieval_chain. This chain applies the history_aware_retriever and question_answer_chain 
 # in sequence, retaining intermediate outputs such as the retrieved context for convenience. It has input keys input and chat_history, 
