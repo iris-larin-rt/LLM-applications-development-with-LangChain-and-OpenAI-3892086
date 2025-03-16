@@ -1,0 +1,16 @@
+langchain
+langchain-community
+langchain-core
+langchain-openai
+langchain-text-splitters
+tiktoken
+python-dotenv
+openai
+beautifulsoup4
+bs4
+chromadb
+langchainhub
+faiss-cpu
+
+
+
